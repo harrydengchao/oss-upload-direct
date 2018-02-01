@@ -1,1 +1,1 @@
-module.exports = require('./dist/oss-h5-upload-direct.min.js')
+module.exports = require('./dist/build.js')
