@@ -1,13 +1,18 @@
 {
   "name": "oss-upload-direct",
   "description": "This is Aliyun OSS JavaScript upload direct.",
-  "version": "0.1.4",
+  "version": "0.1.6",
   "author": "chao deng <dengchao2056@126.com>",
   "license": "MIT",
   "main": "index.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --hot --inline --progress --config webpack.config.dev.js",
-    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
+    "build": "npm run tag && cross-env NODE_ENV=production webpack --progress --hide-modules",
+    "tag": "bump --prompt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/harrydengchao/oss-upload-direct.git"
   },
   "keywords": [
     "oss-upload-direct"
@@ -33,6 +38,7 @@
     "cross-env": "^5.0.5",
     "css-loader": "^0.28.7",
     "file-loader": "^1.1.4",
+    "version-bump-prompt": "^4.0.0",
     "vue-loader": "^13.0.5",
     "vue-template-compiler": "^2.4.4",
     "webpack": "^3.6.0",
