@@ -29,22 +29,13 @@ export default {
     }
   },
   mounted() {
-    this.handleGetToken()
-      .then(res => {
-        this.handleOSSUpload({
-          // accessid: res.accessid,
-          // accesskey: res.accessSecret,
-          // host: res.host,
-          // dirname: res.dir
-          accessid: '6MKOqxGiGU4AUk44',
-          accesskey: 'ufu7nS8kS59awNihtjSonMETLI0KLy',
-          host: 'http://post-test.oss-cn-hangzhou.aliyuncs.com',
-          dirname: 'www'
-        })
-      })
-      .catch(err => {
-        console.error(err)
-      })
+    this.handleOSSUpload({
+      accessid: '6MKOqxGiGU4AUk44',
+      accesskey: 'ufu7nS8kS59awNihtjSonMETLI0KLy',
+      host: 'http://post-test.oss-cn-hangzhou.aliyuncs.com',
+      dirname: 'www',
+      object_name_type: 'random_name'
+    })
   },
   methods: {
     // OSS直传初始化
@@ -85,22 +76,6 @@ export default {
           console.log('error: ')
           console.log(up, err)
         }
-      })
-    },
-    // 获取OSS token
-    handleGetToken() {
-      return new Promise((resolve, reject) => {
-        axios
-          .get('http://test.tjapi.gxtr9.com:5396/tj/oss/getOssToken?appid=sys_127')
-          .then((response) => {
-            const { code, data, message } = response.data || {}
-            if (String(code) === '0') {
-              resolve(data)
-            } else {
-              reject(message)
-            }
-          })
-          .catch(reject)
       })
     }
   }
