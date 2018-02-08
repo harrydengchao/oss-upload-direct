@@ -10,7 +10,7 @@ npm install --save oss-upload-direct
 
 ## 标签引入
 ```html
-<script type="text/javascript" src="/oss-upload-direct/dist/oss-upload-direct.min.js"></script>
+<script type="text/javascript" src="/oss-upload-direct/dist/build.js"></script>
 <script type="text/javascript">
   console.log(window.OSSUpload)
 </script>
