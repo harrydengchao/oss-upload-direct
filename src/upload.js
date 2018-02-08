@@ -47,6 +47,10 @@ class Upload {
     this.timestamp = Date.parse(new Date()) / 1000
     this.now = this.timestamp
     this.object_name_type = object_name_type
+    this.dirname = dirname.replace(/^\//, '')
+    if (!/\/$/.test(this.dirname)) {
+      this.dirname += '/'
+    }
 
     this.policyText = {
       "expiration": this.expiration, //设置该Policy的失效时间，超过这个失效时间之后，就没有办法通过这个policy上传文件了
@@ -66,28 +70,31 @@ class Upload {
       {
         name: 'local_name',
         get handle() {
+          const get_object_name = (filename) => {
+            return that.dirname + "${filename}"
+          }
+          const get_uploaded_object_name = (filename) => {
+            let tmp_name = get_object_name(filename)
+            return tmp_name.replace("${filename}", filename)
+          }
           return {
-            get_object_name(filename) {
-              return that.dirname + "${filename}"
-            },
-            get_uploaded_object_name(filename) {
-              let tmp_name = that.get_object_name(filename)
-              tmp_name = tmp_name.replace("${filename}", filename)
-              return tmp_name
-            }
+            get_object_name,
+            get_uploaded_object_name
           }
         }
       }, {
         name: 'random_name',
         get handle() {
+          const get_object_name = (filename) => {
+            const suffix = that.get_suffix(filename)
+            return that.dirname + that.get_random_string(10) + suffix
+          }
+          const get_uploaded_object_name = (filename) => {
+            return get_object_name(filename)
+          }
           return {
-            get_object_name(filename) {
-              const suffix = that.get_suffix(filename)
-              return that.dirname + that.get_random_string(10) + suffix
-            },
-            get_uploaded_object_name(filename) {
-              return that.get_object_name(filename)
-            }
+            get_object_name,
+            get_uploaded_object_name
           }
         }
       }
@@ -119,9 +126,9 @@ class Upload {
 
   // 设置上传参数
   set_upload_param(up, filename, ret) {
-    const key = this.chain.filter(obj => obj.name === this.object_name_type)[0].handle.get_object_name(filename)
+    let object_name = this.chain.filter(obj => obj.name === this.object_name_type)[0].handle.get_object_name(filename)
     const new_multipart_params = {
-      'key': key,
+      'key': object_name,
       'policy': this.policyBase64,
       'OSSAccessKeyId': this.accessid,
       'success_action_status': '200', //让服务端返回200,不然，默认会返回204
